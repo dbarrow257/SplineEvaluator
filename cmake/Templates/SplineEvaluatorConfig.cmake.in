@@ -1,0 +1,50 @@
+@PACKAGE_INIT@
+
+set(SPLINEEVALUATOR_VERSION @PROJECT_VERSION@)
+
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../../cmake)
+
+get_filename_component(SplineEvaluator_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+list(APPEND CMAKE_MODULE_PATH "${SplineEvaluator_CMAKE_DIR}")
+list(APPEND CMAKE_MODULE_PATH "${SplineEvaluator_CMAKE_DIR}/cmake")
+
+enable_language(CXX)
+
+set(NuOscillator_FOUND TRUE)
+
+find_package(ROOT @ROOT_VERSION@ EXACT REQUIRED)
+
+include(${CMAKE_CURRENT_LIST_DIR}/SplineEvaluatorTargets.cmake)
+
+if(NOT TARGET SplineEvaluator::All)
+  cmessage(FATAL_ERROR "Didn't set up SplineEvaluator::All")
+endif()
+
+get_filename_component(SplineEvaluator_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+find_path(SplineEvaluator_INCLUDE_DIR
+  PATHS ${SplineEvaluator_CMAKE_DIR}/include/
+)
+
+find_path(SplineEvaluator_LIB_DIR
+  PATHS ${SplineEvaluator_CMAKE_DIR}/lib/
+)
+
+find_path(SplineEvaluator_PREFIX
+  PATHS ${SplineEvaluator_CMAKE_DIR}/
+)
+
+cmessage(STATUS "SplineEvaluator_LIB_DIR: ${SplineEvaluator_LIB_DIR}")
+cmessage(STATUS "SplineEvaluator_INCLUDE_DIR: ${SplineEvaluator_INCLUDE_DIR}")
+cmessage(STATUS "SplineEvaluator_PREFIX: ${SplineEvaluator_PREFIX}")
+cmessage(STATUS "SplineEvaluator_VERSION: ${SplineEvaluator_VERSION}")
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(SplineEvaluator
+    REQUIRED_VARS
+      SplineEvaluator_INCLUDE_DIR
+      SplineEvaluator_LIB_DIR
+      SplineEvaluator_PREFIX
+    VERSION_VAR
+      SplineEvaluator_VERSION
+)
