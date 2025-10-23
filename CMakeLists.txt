@@ -74,10 +74,22 @@ endif()
 
 find_package(ROOT 6.18 REQUIRED)
 
+CPMAddPackage(
+  NAME Eigen
+  VERSION 3.4.0
+  URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+  DOWNLOAD_ONLY YES
+)
+if(Eigen_ADDED)
+  add_library(Eigen INTERFACE IMPORTED)
+  target_include_directories(Eigen INTERFACE ${Eigen_SOURCE_DIR})
+endif()
+
 #================================================================================================
 #Subdirectories to add
 
-#add_subdirectory(SplineStruct)
+add_subdirectory(SplineStruct)
+add_subdirectory(Apps)
 
 #================================================================================================
 
@@ -96,7 +108,7 @@ install(TARGETS SplineEvaluatorCompilerOptions
 #This is to export the target properties of SPLINEEVALUATOR
 #Anything that links to "SPLINEEVALUATOR" will get all of these target properties
 add_library(SplineEvaluator INTERFACE)
-target_link_libraries(SplineEvaluator INTERFACE SplineEvaluatorCompilerOptions)
+target_link_libraries(SplineEvaluator INTERFACE SplineStruct SplineEvaluatorCompilerOptions)
 set_target_properties(SplineEvaluator PROPERTIES EXPORT_NAME All)
 
 install(TARGETS SplineEvaluator
