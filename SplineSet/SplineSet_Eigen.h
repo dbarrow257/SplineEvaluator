@@ -15,23 +15,20 @@
 class SplineSet_Eigen : public SplineSet {
 public:
   // ========================================================================================================================================================================
-
   SplineSet_Eigen(YAML::Node Config);
   
   /**
    * @brief Destructor
    */
   virtual ~SplineSet_Eigen();
-
-  void SetupSplineSet();
-  void ReadSplines(TFile* File);
-  void EvaluateSpline(double DialValue);
-  double* ReturnSplineWeightPointer(int Index);
   
 protected:
+  void SetupMemoryStructure();
+  void ReadSplines(std::string FileName_);
+  void EvaluateSplines(double DialValue_);
+  double* ReturnSplineWeightPointer(int Index_);
 
 private:
-
   Eigen::MatrixXd Coefficients;
   Eigen::VectorXd Weights;
 };

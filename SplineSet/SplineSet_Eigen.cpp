@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "TKey.h"
+#include "TFile.h"
 #include "TROOT.h"
 #include "TSpline.h"
 #include "TObjString.h"
@@ -13,12 +14,14 @@ SplineSet_Eigen::SplineSet_Eigen(YAML::Node InputConfig_) : SplineSet(InputConfi
 SplineSet_Eigen::~SplineSet_Eigen() {
 }
 
-void SplineSet_Eigen::SetupSplineSet() {
-  Coefficients = Eigen::MatrixXd(nSplines,nKnots*nCoefficientsPerKnot);
-  Weights = Eigen::VectorXd(nSplines);
+void SplineSet_Eigen::SetupMemoryStructure() {
+  Coefficients = Eigen::MatrixXd(GetNSplines(),GetNKnots()*nCoefficientsPerKnot);
+  Weights = Eigen::VectorXd(GetNSplines());
 }
 
-void SplineSet_Eigen::ReadSplines(TFile* File) {
+void SplineSet_Eigen::ReadSplines(std::string FileName_) {
+  TFile* File = TFile::Open(FileName_.c_str());
+  
   int SplineCounter = 0;
   for (auto k : *File->GetListOfKeys()) {
     auto Key = static_cast<TKey*>(k);
@@ -35,7 +38,7 @@ void SplineSet_Eigen::ReadSplines(TFile* File) {
     }
 
     std::string SplineSystName = std::string(((TObjString*)(tokens->At(TokenEnum::SystName)))->GetString());
-    if (SystName != SplineSystName) continue;
+    if (GetSystName() != SplineSystName) continue;
 
     std::string SplineXBinVarName = std::string(((TObjString*)(tokens->At(TokenEnum::XBinIdentifier)))->GetString());
     std::string SplineXBinIndex = std::string(((TObjString*)(tokens->At(TokenEnum::XBinValue)))->GetString());
@@ -66,30 +69,14 @@ void SplineSet_Eigen::ReadSplines(TFile* File) {
     
     SplineCounter += 1;
   }
-
-  std::cout << "Knot locations for systematic:" << SystName << " - " << std::endl;
-  std::cout << "\t";
-  for (int iKnot=0;iKnot<nKnots;iKnot++) {    
-    std::cout << KnotLocations[iKnot] << ", ";
-  }
-  std::cout << std::endl;
-  
-  std::cout << "Successfully read coefficients for systematic:" << SystName << "\n" << std::endl;
 }
 
-void SplineSet_Eigen::EvaluateSpline(double DialValue) {
-  if (DialValue < KnotLocations[0] || DialValue > KnotLocations[nKnots-1]) {
-    std::cerr << "Invalid Dial Value - Outside of Spline Range [" << KnotLocations[0] << ", " << KnotLocations[nKnots-1] << "]" << std::endl;
-    throw;
-  }
-
-  int SegmentIndex = static_cast<int>(std::distance(KnotLocations.begin(), std::upper_bound(KnotLocations.begin(), KnotLocations.end(), DialValue)) - 1);
-
-  double DelX = DialValue-KnotLocations[SegmentIndex];
-  Eigen::VectorXd Y = Coefficients.col(SegmentIndex*nCoefficientsPerKnot+SplineCoeff::CoeffY);
-  Eigen::VectorXd B = Coefficients.col(SegmentIndex*nCoefficientsPerKnot+SplineCoeff::CoeffB);
-  Eigen::VectorXd C = Coefficients.col(SegmentIndex*nCoefficientsPerKnot+SplineCoeff::CoeffC);
-  Eigen::VectorXd D = Coefficients.col(SegmentIndex*nCoefficientsPerKnot+SplineCoeff::CoeffD);
+void SplineSet_Eigen::EvaluateSplines(double DialValue) {
+  double DelX = DialValue-KnotLocations[GetSegmentIndex()];
+  Eigen::VectorXd Y = Coefficients.col(GetSegmentIndex()*nCoefficientsPerKnot+SplineCoeff::CoeffY);
+  Eigen::VectorXd B = Coefficients.col(GetSegmentIndex()*nCoefficientsPerKnot+SplineCoeff::CoeffB);
+  Eigen::VectorXd C = Coefficients.col(GetSegmentIndex()*nCoefficientsPerKnot+SplineCoeff::CoeffC);
+  Eigen::VectorXd D = Coefficients.col(GetSegmentIndex()*nCoefficientsPerKnot+SplineCoeff::CoeffD);
 
   Weights = Y+DelX*(B+DelX*(C+D*DelX));
 }

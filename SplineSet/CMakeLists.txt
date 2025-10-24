@@ -1,10 +1,10 @@
 set(HEADERS SplineSet.h SplineSet_Eigen.h)
 
-add_library(SplineStruct SHARED SplineSet.cpp SplineSet_Eigen.cpp)
+add_library(SplineSet SHARED SplineSet.cpp SplineSet_Eigen.cpp)
 
-target_link_libraries(SplineStruct yaml-cpp SplineEvaluatorCompilerOptions ROOT::Core ROOT::Hist Eigen)
+target_link_libraries(SplineSet yaml-cpp SplineEvaluatorCompilerOptions ROOT::Core ROOT::Hist Eigen)
 
-target_include_directories(SplineStruct PUBLIC
+target_include_directories(SplineSet PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../>
   $<INSTALL_INTERFACE:include>
 )
@@ -19,13 +19,13 @@ install(DIRECTORY ${yaml-cpp_SOURCE_DIR}/include/
   DESTINATION include/
 )
 
-set_target_properties(SplineStruct PROPERTIES
+set_target_properties(SplineSet PROPERTIES
   PUBLIC_HEADER "${HEADERS}"
-  EXPORT_NAME SplineStruct)
+  EXPORT_NAME SplineSet)
 
-install(TARGETS SplineStruct
+install(TARGETS SplineSet
   EXPORT SplineEvaluator-targets
   LIBRARY DESTINATION lib/
-  PUBLIC_HEADER DESTINATION include/SplineStruct)
+  PUBLIC_HEADER DESTINATION include/SplineSet)
 
-add_library(SplineStruct::SplineStruct ALIAS SplineStruct)
+add_library(SplineSet::SplineSet ALIAS SplineSet)
