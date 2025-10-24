@@ -19,6 +19,17 @@ InputHandler_SingleRootDir::InputHandler_SingleRootDir(std::string InputFileName
       continue;
     }
 
+    //Check if flat spline
+    TSpline3* Spl = Key->ReadObject<TSpline3>();
+    std::vector<double> EvalValues(Spl->GetNp());
+    double X;
+    double Y;
+    for (int iKnot = 0; iKnot < Spl->GetNp(); iKnot++) {
+      Spl->GetKnot(iKnot, X, Y);
+      EvalValues[iKnot] = Y;
+    }
+    if (IsSplineFlat(EvalValues)) continue;
+
     TString FullSplineName = Key->GetName();
     TObjArray *tokens = TString(FullSplineName).Tokenize("_");
     if (tokens->GetEntries() != TokenEnum::nTokenEnums) {
@@ -27,7 +38,7 @@ InputHandler_SingleRootDir::InputHandler_SingleRootDir(std::string InputFileName
     }
 
     std::string SystName = std::string(((TObjString*)(tokens->At(TokenEnum::SystName)))->GetString());
-
+    
     bool Found = false;
     for (size_t iFoundSystNames=0;iFoundSystNames<FoundSystNames.size();iFoundSystNames++) {
       if (SystName == FoundSystNames[iFoundSystNames]) {

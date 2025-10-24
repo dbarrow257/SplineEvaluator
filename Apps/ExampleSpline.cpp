@@ -12,10 +12,6 @@ int main() {
   std::vector<double> SystDialValues = {           1,          1,          1};
   std::vector<std::string> SystNames = {"TotalRatio", "NuMRatio", "NuERatio"};
 
-  //Used for weight returning (e.g. let's return the weight for the XBin==1 and YBin==1 splines for each of the systematics)
-  std::vector<std::string> SplineBinning_ParameterNames    = {"XBin","YBin"};
-  std::vector<double> SplineBinning_ParameterValuesToPrint = {     1,     1};
-
   //Spline evaluation
   int nThrows = 1000;
   srand(0); //Set Random seed to known value
@@ -25,7 +21,7 @@ int main() {
   
   for (int iThrow=0;iThrow<nThrows;iThrow++) {
     for (size_t iSyst=0;iSyst<SystNames.size();iSyst++) {
-      SystDialValues[iSyst] = ((double) rand() / (RAND_MAX)) * 8;
+      SystDialValues[iSyst] = ((double) rand() / (RAND_MAX)) * 8; //Gives Random number between 0 and 8 which is range where spline is defined
     }
     Splines->EvaluateSplines(SystDialValues);
   }
@@ -34,11 +30,23 @@ int main() {
   std::cout << "Average time of evaluation = " << (std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count())/nThrows << "[ns]" << std::endl;
   std::cout << std::endl;
 
+  //Do some printing of all weights at known value for comparison
   for (size_t iSyst=0;iSyst<SystNames.size();iSyst++) {
     SystDialValues[iSyst] = 5.;
   }
   Splines->EvaluateSplines(SystDialValues);
   Splines->PrintWeights();
+
+  //Used for weight pointer returning (e.g. let's return the weight for the XBin==1 and YBin==1 splines for the TotalRatio and NuERatio systematics)
+  std::vector<std::string> SplineBinning_SystNames = {"TotalRatio", "NuERatio"};
+  std::vector<std::string> SplineBinning_ParameterNames    = {"XBin","YBin"};
+  std::vector<double> SplineBinning_ParameterValuesToPrint = {     1,     1};
+
+  std::cout << "Weights for specified systematics and matched variables.." << std::endl;
+  std::vector<double*> Weights = Splines->ReturnSplineWeightPointers(SplineBinning_SystNames,SplineBinning_ParameterNames,SplineBinning_ParameterValuesToPrint);
+  for (size_t iWeight = 0;iWeight<Weights.size();iWeight++) {
+    std::cout << "\t" << iWeight << " - " << *Weights[iWeight] << std::endl;
+  }
   
   return 0;
 }

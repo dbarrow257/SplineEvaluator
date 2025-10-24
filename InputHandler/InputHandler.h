@@ -45,6 +45,7 @@ public:
   
 protected:
   std::string InputFileName;
-  
+
+  bool IsSplineFlat(std::vector<double> EvaluationValues_);
 private:
 };
