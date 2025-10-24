@@ -46,7 +46,6 @@ protected:
   virtual void SetupMemoryStructure() = 0;
   virtual void EvaluateSplines(double DialValue_) = 0;
   virtual double* ReturnSplineWeightPointer(int Index_) = 0;
-  virtual void ReadSplines(std::string FileName_) = 0;
   virtual void SetKnotCoefficients(int SplineIndex, int KnotIndex, std::vector<double> Coeffs_) = 0;
   
   std::vector<double> KnotLocations;

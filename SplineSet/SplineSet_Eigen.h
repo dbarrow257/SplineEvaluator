@@ -24,7 +24,6 @@ public:
   
 protected:
   void SetupMemoryStructure();
-  void ReadSplines(std::string FileName_);
   void EvaluateSplines(double DialValue_);
   void SetKnotCoefficients(int SplineIndex, int KnotIndex, std::vector<double> Coeffs_);
   double* ReturnSplineWeightPointer(int Index_);

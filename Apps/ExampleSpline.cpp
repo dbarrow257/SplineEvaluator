@@ -33,7 +33,11 @@ int main() {
   std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
   std::cout << "Average time of evaluation = " << (std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count())/nThrows << "[ns]" << std::endl;
   std::cout << std::endl;
-  
+
+  for (size_t iSyst=0;iSyst<SystNames.size();iSyst++) {
+    SystDialValues[iSyst] = 5.;
+  }
+  Splines->EvaluateSplines(SystDialValues);
   Splines->PrintWeights();
   
   return 0;
