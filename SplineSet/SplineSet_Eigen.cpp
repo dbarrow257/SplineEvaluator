@@ -61,13 +61,19 @@ void SplineSet_Eigen::ReadSplines(std::string FileName_) {
       Coefficients(SplineCounter,(iKnot*nCoefficientsPerKnot)+SplineCoeff::CoeffC) = C;
       Coefficients(SplineCounter,(iKnot*nCoefficientsPerKnot)+SplineCoeff::CoeffD) = D;
     }
-
+    
     SplineIdentifier SplIden = SplineIdentifier();
     SplIden.ParIdentifiers = {SplineXBinVarName,SplineYBinVarName};
     SplIden.ParVals = {std::stod(SplineXBinIndex),std::stod(SplineYBinIndex)};
     SplineIdentifiers[SplineCounter] = SplIden;
     
     SplineCounter += 1;
+  }
+}
+
+void SplineSet_Eigen::SetKnotCoefficients(int SplineIndex, int KnotIndex, std::vector<double> Coeffs_) {
+  for (int iCoeffIndex=0;iCoeffIndex<SplineCoeff::nCoefficientsPerKnot;iCoeffIndex++) {
+    Coefficients(SplineIndex,(KnotIndex*nCoefficientsPerKnot)+iCoeffIndex) = Coeffs_[iCoeffIndex];
   }
 }
 

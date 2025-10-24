@@ -5,19 +5,6 @@
 
 #include "InputHandler/InputHandler.h"
 
-enum SplineCoeff {
-  CoeffY = 0,
-  CoeffB = 1,
-  CoeffC = 2,
-  CoeffD = 3,
-  nCoefficientsPerKnot = 4
-};
-
-struct SplineIdentifier {
-  std::vector<std::string> ParIdentifiers;
-  std::vector<double> ParVals;
-};
-
 /**
  * @file SplineSet.h
  *
@@ -60,6 +47,7 @@ protected:
   virtual void EvaluateSplines(double DialValue_) = 0;
   virtual double* ReturnSplineWeightPointer(int Index_) = 0;
   virtual void ReadSplines(std::string FileName_) = 0;
+  virtual void SetKnotCoefficients(int SplineIndex, int KnotIndex, std::vector<double> Coeffs_) = 0;
   
   std::vector<double> KnotLocations;
   std::vector<SplineIdentifier> SplineIdentifiers;

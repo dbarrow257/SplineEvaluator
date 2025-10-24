@@ -26,7 +26,15 @@ void SplineSet::DigestSplines(std::string FileName_) {
   nKnots = KnotLocations.size();
 
   SetupMemoryStructure();
-  ReadSplines(FileName_);
+
+  for (int iSpline=0;iSpline<nSplines;iSpline++) {
+    SplineIdentifiers[iSpline] = Inputs->GetSplineIdentifier(SystName,iSpline);
+    for (int iKnot=0;iKnot<nKnots;iKnot++) {
+      SetKnotCoefficients(iSpline,iKnot,Inputs->GetKnotCoeff(SystName,iSpline,iKnot));
+    }
+  }
+  
+  //ReadSplines(FileName_);
   std::cout << "Successfully read coefficients for systematic:" << SystName << "\n" << std::endl;
 }
 

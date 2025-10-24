@@ -8,7 +8,6 @@
 SetHandler::SetHandler(YAML::Node Config_) {
   InputFileName = "AtmosphericFluxShapeSplines.root";
   Inputs = new InputHandler_SingleRootDir(InputFileName);
-  
   SystNames = Inputs->ReturnSystNames();
 
   SplineSets.resize(SystNames.size());
