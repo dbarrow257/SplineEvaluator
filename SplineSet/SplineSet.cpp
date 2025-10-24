@@ -16,14 +16,21 @@ SplineSet::SplineSet(YAML::Node Config_) {
 SplineSet::~SplineSet() {
 }
 
-void SplineSet::DigestSplines(std::string FileName_) {
-  InputFileName = FileName_;
-  
+void SplineSet::DigestSplines() {
+  std::cout << "Digesting Splines for systematic:" << SystName << std::endl;
   nSplines = Inputs->DetermineNumberOfSplines(SystName);
+  std::cout << "Found " << nSplines << " splines" << std::endl;
   SplineIdentifiers.resize(nSplines);
-  
+
   KnotLocations = Inputs->DetermineKnotLocations(SystName);
   nKnots = KnotLocations.size();
+  std::cout << "Found " << nKnots << " knots per spline" << std::endl;
+  std::cout << "Knot locations:" << std::endl;
+  std::cout << "\t";
+  for (int iKnot=0;iKnot<nKnots;iKnot++) {
+    std::cout << KnotLocations[iKnot] << ", ";
+  }
+  std::cout << std::endl;
 
   SetupMemoryStructure();
 
@@ -34,7 +41,6 @@ void SplineSet::DigestSplines(std::string FileName_) {
     }
   }
   
-  //ReadSplines(FileName_);
   std::cout << "Successfully read coefficients for systematic:" << SystName << "\n" << std::endl;
 }
 

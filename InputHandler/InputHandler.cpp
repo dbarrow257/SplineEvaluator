@@ -1,6 +1,10 @@
 #include "InputHandler.h"
 
+#include <iostream>
+
 InputHandler::InputHandler(std::string InputFileName_) {
+  std::cout << "Building Spline Inputs from FileName:" << InputFileName_ << "\n" << std::endl;
+  
   InputFileName = InputFileName_;
 }
 

@@ -6,7 +6,8 @@
 #include "InputHandler/InputHandler_SingleRootDir.h"
 
 SetHandler::SetHandler(YAML::Node Config_) {
-  InputFileName = "AtmosphericFluxShapeSplines.root";
+  InputFileName = Config_["InputFileName"].as<std::string>();
+  
   Inputs = new InputHandler_SingleRootDir(InputFileName);
   SystNames = Inputs->ReturnSystNames();
 
@@ -15,7 +16,7 @@ SetHandler::SetHandler(YAML::Node Config_) {
     SplineSets[iSyst] = new SplineSet_Eigen(YAML::Node());
     SplineSets[iSyst]->SetSystName(SystNames[iSyst]);
     SplineSets[iSyst]->SetInputHandler(Inputs);
-    SplineSets[iSyst]->DigestSplines(InputFileName);
+    SplineSets[iSyst]->DigestSplines();
   }
 }
 

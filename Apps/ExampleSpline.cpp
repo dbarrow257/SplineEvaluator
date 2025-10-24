@@ -6,7 +6,10 @@
 #include <chrono>
 
 int main() {
-  SetHandler* Splines = new SetHandler(YAML::Node());
+  YAML::Node Node = YAML::Node();
+  Node["InputFileName"] = "AtmosphericFluxShapeSplines.root";
+  
+  SetHandler* Splines = new SetHandler(Node);
 
   //Definition of systematics
   std::vector<double> SystDialValues = {           1,          1,          1};

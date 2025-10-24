@@ -21,7 +21,7 @@ public:
    */
   virtual ~SplineSet();
 
-  void DigestSplines(std::string FileName_);
+  void DigestSplines();
   void SetInputHandler(InputHandler* Inputs_) {Inputs = Inputs_;}
   void SetSystName(std::string SystName_) {SystName = SystName_;}
   inline std::string GetSystName() {return SystName;}
