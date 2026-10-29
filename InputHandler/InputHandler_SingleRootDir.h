@@ -4,6 +4,8 @@
 #include "TFile.h"
 #include "TKey.h"
 
+#include <unordered_map>
+
 class InputHandler_SingleRootDir : public InputHandler {
 public:
   // ========================================================================================================================================================================
