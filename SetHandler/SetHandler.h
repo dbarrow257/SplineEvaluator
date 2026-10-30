@@ -23,9 +23,9 @@ public:
   SetHandler(YAML::Node Config_);
 
   void PrintWeights();
-  void EvaluateSplines(std::vector<double> SystDialValues_);
-  std::vector<double> ReturnSplineWeights(std::vector<std::string> SystNames_, std::vector<std::string> ParNames_, std::vector<double> ParVals_);
-  std::vector<double*> ReturnSplineWeightPointers(std::vector<std::string> SystNames_, std::vector<std::string> ParNames_, std::vector<double> ParVals_);
+  void EvaluateSplines(const std::vector<double>& SystDialValues_);
+  std::vector<double> ReturnSplineWeights(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_);
+  std::vector<double*> ReturnSplineWeightPointers(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_);
   
 protected:
   std::vector<std::string> ReturnSystNames(std::string FileName_);

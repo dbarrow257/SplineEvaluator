@@ -23,7 +23,9 @@ SetHandler::SetHandler(YAML::Node Config_) {
 SetHandler::~SetHandler() {
 }
 
-void SetHandler::EvaluateSplines(std::vector<double> SystDialValues_) {
+//void SetHandler::SetDialValuePointers
+
+void SetHandler::EvaluateSplines(const std::vector<double>& SystDialValues_) {
   if (SystDialValues_.size() != SystNames.size()) {
     std::cerr << "Number of dial values passed does not equal that expected by the number of syst names found from the spline names" << std::endl;
     throw;
@@ -49,7 +51,7 @@ int SetHandler::ReturnSplineSetIndex(std::string SystName_) {
   return -1;
 }
 
-std::vector<double> SetHandler::ReturnSplineWeights(std::vector<std::string> SystNames_, std::vector<std::string> ParNames_, std::vector<double> ParVals_) {
+std::vector<double> SetHandler::ReturnSplineWeights(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_) {
   std::vector<double> ReturnVector;
   std::vector<double*> WeightPointers = ReturnSplineWeightPointers(SystNames_, ParNames_,ParVals_);
   for (size_t iPtr=0;iPtr<WeightPointers.size();iPtr++) {
@@ -64,7 +66,7 @@ void SetHandler::PrintWeights() {
   }
 }
 
-std::vector<double*> SetHandler::ReturnSplineWeightPointers(std::vector<std::string> SystNames_, std::vector<std::string> ParNames_, std::vector<double> ParVals_) {
+std::vector<double*> SetHandler::ReturnSplineWeightPointers(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_) {
   std::vector<double*> ReturnVector;
 
   for (size_t iSyst=0;iSyst<SystNames_.size();iSyst++) {
