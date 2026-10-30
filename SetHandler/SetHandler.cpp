@@ -40,6 +40,12 @@ int SetHandler::ReturnSplineSetIndex(std::string SystName_) {
       return iSyst;
     }
   }
+  std::cerr << "Did not find Systematic Index for Systematic Name:" << SystName_ << std::endl;
+  std::cerr << "Valid systematic names:" << std::endl;
+  for (size_t iSyst=0;iSyst<SystNames.size();iSyst++) {
+    std::cerr << "\t" << SystNames[iSyst] << std::endl;
+  }
+  throw;
   return -1;
 }
 
