@@ -23,6 +23,26 @@ SetHandler::SetHandler(YAML::Node Config_) {
 SetHandler::~SetHandler() {
 }
 
+void SetHandler::SetDialValuePointers(const std::vector<std::string>& SystNames_, const std::vector<const double*>& Pointers_) {
+  SystDialValuePointers.resize(SystNames.size());
+
+  for (size_t iSyst=0;iSyst<SystNames.size();iSyst++) {
+    int SystIndex = ReturnSplineSetIndex(SystNames_[iSyst]);
+    SystDialValuePointers[SystIndex] = Pointers_[iSyst];
+  }  
+}
+
+void SetHandler::EvaluateSplines() {
+  if (!fSystDialValuePointersSet) {
+    std::cerr << "Pointers to dial values have not been set - invalid use of this function" << std::endl;
+    throw;
+  }
+
+  for (size_t iSyst=0;iSyst<SystDialValuePointers.size();iSyst++) {
+    SplineSets[iSyst]->Evaluate(*(SystDialValuePointers[iSyst]));
+  }  
+}
+
 void SetHandler::EvaluateSplines(const std::vector<double>& SystDialValues_) {
   if (SystDialValues_.size() != SystNames.size()) {
     std::cerr << "Number of dial values passed does not equal that expected by the number of syst names found from the spline names" << std::endl;

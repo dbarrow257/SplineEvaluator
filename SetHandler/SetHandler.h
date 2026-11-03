@@ -24,6 +24,8 @@ public:
 
   void PrintWeights();
   void EvaluateSplines(const std::vector<double>& SystDialValues_);
+  void EvaluateSplines();
+  void SetDialValuePointers(const std::vector<std::string>& SystNames_, const std::vector<const double*>& Pointers_);
   std::vector<double> ReturnSplineWeights(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_);
   std::vector<double*> ReturnSplineWeightPointers(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_);
   
@@ -36,4 +38,7 @@ protected:
 
   std::string InputFileName;
   InputHandler* Inputs;
+
+  bool fSystDialValuePointersSet;
+  std::vector<const double*> SystDialValuePointers;
 };
