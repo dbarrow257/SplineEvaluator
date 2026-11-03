@@ -19,6 +19,10 @@ SplineSet::~SplineSet() {
 void SplineSet::DigestSplines() {
   std::cout << "Digesting Splines for systematic:" << SystName << std::endl;
   nSplines = Inputs->DetermineNumberOfSplines(SystName);
+  if (nSplines == 0) {
+    std::cerr << "No splines found - likely an issue" << std::endl;
+    throw;
+  }
   std::cout << "Found " << nSplines << " splines" << std::endl;
   SplineIdentifiers.resize(nSplines);
 
@@ -40,34 +44,50 @@ void SplineSet::DigestSplines() {
       SetKnotCoefficients(iSpline,iKnot,Inputs->GetKnotCoeff(SystName,iSpline,iKnot));
     }
   }
+
+  std::vector<std::string> ReferenceParIdentifiers = SplineIdentifiers[0].ParIdentifiers;
+  for (int iSpline=1;iSpline<nSplines;iSpline++) {
+    if (ReferenceParIdentifiers.size() != SplineIdentifiers[iSpline].ParIdentifiers.size()) {
+      std::cerr << "Splines created with different numbers of parameter names which indicates a problem" << std::endl;
+      throw;
+    }
+    for (size_t iParName=0;iParName<ReferenceParIdentifiers.size();iParName++) {
+      if (ReferenceParIdentifiers[iParName] != SplineIdentifiers[iSpline].ParIdentifiers[iParName]) {
+	std::cerr << "Splines created with different parameter names which indicates a problem" << std::endl;
+	throw;
+      }
+    }
+  }
+  std::cout << "Spline parameter names:" << std::endl;
+  for (size_t iParName=0;iParName<ReferenceParIdentifiers.size();iParName++) {
+    std::cout << "\t" << iParName << ":" << ReferenceParIdentifiers[iParName] << std::endl;
+  }
   
   std::cout << "Successfully read coefficients for systematic:" << SystName << "\n" << std::endl;
 }
 
 std::vector<double*> SplineSet::ReturnSplineWeightPointers(std::vector<std::string> ParNames_, std::vector<double> ParValues_) {
   std::vector<double*> ReturnWeights;
+
+  if (ParNames_.size() != SplineIdentifiers[0].ParIdentifiers.size()) {
+    throw;
+  }
+  for (size_t iParName=0;iParName<ParNames_.size();iParName++) {
+    if (ParNames_[iParName] != SplineIdentifiers[0].ParIdentifiers[iParName]) {
+      throw;
+    }
+  }
+  if (ParValues_.size() != SplineIdentifiers[0].ParVals.size()) {
+    throw;
+  }
   
   for (int iSpline=0;iSpline<nSplines;iSpline++) {
     bool Matched = true;
     
-    if (ParNames_.size() != SplineIdentifiers[iSpline].ParIdentifiers.size()) {
-      continue;
-    }
-    for (size_t iParName=0;iParName<ParNames_.size();iParName++) {
-      if (ParNames_[iParName] != SplineIdentifiers[iSpline].ParIdentifiers[iParName]) {
-	Matched = false;
-	break;
-      }
-    }
-    if (!Matched) continue;
-    
-    if (ParValues_.size() != SplineIdentifiers[iSpline].ParVals.size()) {
-      continue;
-    }
     for (size_t iParVal=0;iParVal<ParValues_.size();iParVal++) {
       if (ParValues_[iParVal] != SplineIdentifiers[iSpline].ParVals[iParVal]) {
 	Matched = false;
-        continue;
+        break;
       }
     }
     if (!Matched) continue;

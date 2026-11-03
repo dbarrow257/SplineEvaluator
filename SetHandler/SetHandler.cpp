@@ -23,8 +23,6 @@ SetHandler::SetHandler(YAML::Node Config_) {
 SetHandler::~SetHandler() {
 }
 
-//void SetHandler::SetDialValuePointers
-
 void SetHandler::EvaluateSplines(const std::vector<double>& SystDialValues_) {
   if (SystDialValues_.size() != SystNames.size()) {
     std::cerr << "Number of dial values passed does not equal that expected by the number of syst names found from the spline names" << std::endl;
