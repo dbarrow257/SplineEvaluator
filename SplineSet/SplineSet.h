@@ -28,7 +28,7 @@ public:
 
   void PrintWeights();
   void Evaluate(double DialValue_);
-  std::vector<double*> ReturnSplineWeightPointers(std::vector<std::string> ParNames_, std::vector<double> ParValues_);
+  std::vector<const double*> ReturnSplineWeightPointers(std::vector<std::string> ParNames_, std::vector<double> ParValues_);
   std::vector<double> ReturnSplineWeights(std::vector<std::string> ParNames_, std::vector<double> ParValues_);
   
 protected:

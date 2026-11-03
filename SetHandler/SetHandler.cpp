@@ -71,7 +71,7 @@ int SetHandler::ReturnSplineSetIndex(std::string SystName_) {
 
 std::vector<double> SetHandler::ReturnSplineWeights(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_) {
   std::vector<double> ReturnVector;
-  std::vector<double*> WeightPointers = ReturnSplineWeightPointers(SystNames_, ParNames_,ParVals_);
+  std::vector<const double*> WeightPointers = ReturnSplineWeightPointers(SystNames_, ParNames_,ParVals_);
   for (size_t iPtr=0;iPtr<WeightPointers.size();iPtr++) {
     ReturnVector[iPtr] = *WeightPointers[iPtr];
   }
@@ -84,8 +84,8 @@ void SetHandler::PrintWeights() {
   }
 }
 
-std::vector<double*> SetHandler::ReturnSplineWeightPointers(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_) {
-  std::vector<double*> ReturnVector;
+std::vector<const double*> SetHandler::ReturnSplineWeightPointers(const std::vector<std::string>& SystNames_, const std::vector<std::string>& ParNames_, const std::vector<double>& ParVals_) {
+  std::vector<const double*> ReturnVector;
 
   for (size_t iSyst=0;iSyst<SystNames_.size();iSyst++) {
     int SystIndex = ReturnSplineSetIndex(SystNames_[iSyst]);
@@ -93,7 +93,7 @@ std::vector<double*> SetHandler::ReturnSplineWeightPointers(const std::vector<st
       continue;
     }
     
-    std::vector<double*> Weights = SplineSets[SystIndex]->ReturnSplineWeightPointers(ParNames_,ParVals_);
+    std::vector<const double*> Weights = SplineSets[SystIndex]->ReturnSplineWeightPointers(ParNames_,ParVals_);
     for (size_t iPtr=0;iPtr<Weights.size();iPtr++) {
       ReturnVector.push_back(Weights[iPtr]);
     }

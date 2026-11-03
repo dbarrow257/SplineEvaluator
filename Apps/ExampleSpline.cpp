@@ -46,7 +46,7 @@ int main() {
   std::vector<double> SplineBinning_ParameterValuesToPrint = {     1,     1};
 
   std::cout << "Weights for specified systematics and matched variables.." << std::endl;
-  std::vector<double*> Weights = Splines->ReturnSplineWeightPointers(SplineBinning_SystNames,SplineBinning_ParameterNames,SplineBinning_ParameterValuesToPrint);
+  std::vector<const double*> Weights = Splines->ReturnSplineWeightPointers(SplineBinning_SystNames,SplineBinning_ParameterNames,SplineBinning_ParameterValuesToPrint);
   for (size_t iWeight = 0;iWeight<Weights.size();iWeight++) {
     std::cout << "\t" << iWeight << " - " << *Weights[iWeight] << std::endl;
   }

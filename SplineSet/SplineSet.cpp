@@ -66,8 +66,8 @@ void SplineSet::DigestSplines() {
   std::cout << "Successfully read coefficients for systematic:" << SystName << "\n" << std::endl;
 }
 
-std::vector<double*> SplineSet::ReturnSplineWeightPointers(std::vector<std::string> ParNames_, std::vector<double> ParValues_) {
-  std::vector<double*> ReturnWeights;
+std::vector<const double*> SplineSet::ReturnSplineWeightPointers(std::vector<std::string> ParNames_, std::vector<double> ParValues_) {
+  std::vector<const double*> ReturnWeights;
 
   if (ParNames_.size() != SplineIdentifiers[0].ParIdentifiers.size()) {
     throw;
@@ -99,7 +99,7 @@ std::vector<double*> SplineSet::ReturnSplineWeightPointers(std::vector<std::stri
 }
 
 std::vector<double> SplineSet::ReturnSplineWeights(std::vector<std::string> ParNames_, std::vector<double> ParValues_) {
-  std::vector<double*> SplineWeightPointers = ReturnSplineWeightPointers(ParNames_,ParValues_);
+  std::vector<const double*> SplineWeightPointers = ReturnSplineWeightPointers(ParNames_,ParValues_);
   std::vector<double> SplineWeights = std::vector<double>(SplineWeightPointers.size());
   for (size_t iSpl=0;iSpl<SplineWeightPointers.size();iSpl++) {
     SplineWeights[iSpl] = *SplineWeightPointers[iSpl];
