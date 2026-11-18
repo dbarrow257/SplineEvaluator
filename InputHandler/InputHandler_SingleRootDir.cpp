@@ -171,7 +171,7 @@ std::vector<double> InputHandler_SingleRootDir::GetKnotCoeff(std::string SystNam
   Coeffs[SplineCoeff::CoeffY] = Y;
   Coeffs[SplineCoeff::CoeffB] = B;
   Coeffs[SplineCoeff::CoeffC] = C;
-  Coeffs[SplineCoeff::CoeffC] = D;
+  Coeffs[SplineCoeff::CoeffD] = D;
 
   return Coeffs;
 }
