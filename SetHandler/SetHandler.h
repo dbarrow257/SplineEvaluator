@@ -39,6 +39,6 @@ protected:
   std::string InputFileName;
   InputHandler* Inputs;
 
-  bool fSystDialValuePointersSet;
+  bool fSystDialValuePointersSet = false;
   std::vector<const double*> SystDialValuePointers;
 };
