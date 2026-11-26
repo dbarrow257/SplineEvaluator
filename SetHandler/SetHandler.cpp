@@ -29,7 +29,8 @@ void SetHandler::SetDialValuePointers(const std::vector<std::string>& SystNames_
   for (size_t iSyst=0;iSyst<SystNames.size();iSyst++) {
     int SystIndex = ReturnSplineSetIndex(SystNames_[iSyst]);
     SystDialValuePointers[SystIndex] = Pointers_[iSyst];
-  }  
+  }
+  fSystDialValuePointersSet = true;
 }
 
 void SetHandler::EvaluateSplines() {
